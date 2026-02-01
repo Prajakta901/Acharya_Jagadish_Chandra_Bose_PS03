@@ -35,33 +35,38 @@ print(language_distribution)
 # plt.xticks(rotation=90)
 # plt.show() 
 
-vectorizer = TfidfVectorizer(max_features=5000)  #Convert text to vectors
+
+# Reduce max_features for faster vectorization
+vectorizer = TfidfVectorizer(max_features=1000)  # Use only one vectorizer
 X_train = vectorizer.fit_transform(train_df['Headline'])
 X_val = vectorizer.transform(validation_df['Headline'])
-X_test = vectorizer.transform(test_df['Headline']) 
+X_test = vectorizer.transform(test_df['Headline'])
 
 y_train = train_df['Language']
 y_val = validation_df['Language']
 y_test = test_df['Language']
 
+# # Use MultinomialNB for faster predictions
 model = MultinomialNB()
 model.fit(X_train, y_train)
 
 val_preds = model.predict(X_val)
 print("Validation Accuracy:", accuracy_score(y_val, val_preds))
-print(classification_report(y_val, val_preds)) 
+print(classification_report(y_val, val_preds))
 
 test_preds = model.predict(X_test)
 print("Test Accuracy:", accuracy_score(y_test, test_preds))
-print(classification_report(y_test, test_preds)) 
- 
+print(classification_report(y_test, test_preds))
+
 def predict_language_with_normal(text):
     text_vectorized = vectorizer.transform([text])
     prediction = model.predict(text_vectorized)[0]
     return prediction
-input_text = "নমস্কার, তুমি কেমন আছো?" 
+
+input_text = "यह एक परीक्षण वाक्य है।" 
 predicted_lang = predict_language_with_normal(input_text)
 print(f"Predicted Language: {predicted_lang}") 
+
 language_labels = [
     "Odia", "Nepali", "Hindi", "Assamese", "Sanskrit", "Malayalam",
     "Konkani", "English", "Kannada", "Telugu", "Marathi", "Gujarati",
@@ -71,8 +76,7 @@ language_sentences = [
     "ଏହି ଜଗତ ଅତି ସୁନ୍ଦର |",  
     "यो संसार धेरै सुन्दर छ।",  
     "यह दुनिया बहुत सुंदर है।",  
-    "এই বিশ্ব খুব সুন্দর।",    
-    "संसारः अतीव सुन्दरः अस्ति।",    
+    "এই বিশ্ব খুব সুন্দর।",       
     "ഈ ലോകം അതിവളരെയോ മനോഹരമാണ്.",  
     "हें जग सुंदर आसा।",  
     "This world is very beautiful.",   
@@ -96,8 +100,12 @@ for i, sentence in enumerate(language_sentences):
     print(f"Actual Language: {actual_label} | Predicted Language: {predicted_lang} | Status: {status}")
     print("-" * 80) 
 
-smote = SMOTE(sampling_strategy='auto', random_state=42)
-X_resampled, y_resampled = smote.fit_resample(X_tfidf, y)
-print(Counter(y_resampled))
+def predict_language_with_sample(text):
+    text_vectorized = vectorizer.transform([text])
+    prediction = model.predict(text_vectorized)[0]
+    return prediction
 
-X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2, random_state=42)
+input_text = "यह एक परीक्षण वाक्य है।"  
+predicted_lang = predict_language_with_sample(input_text)
+print(f"Predicted Language: {predicted_lang}") 
+

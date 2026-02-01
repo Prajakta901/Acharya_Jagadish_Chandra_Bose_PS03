@@ -1,6 +1,6 @@
 # IIIT_nagpur_Aachrya_Jagadish
 🏛️ Team: Acharya Jagadish Chandra Bose
-Prajakta Sambhare (Leader): Backend Architecture & GitHub Management
+Prajakta Sambare (Leader): Backend Architecture & GitHub Management
 
 Kaushik Khodke: Backend Lead & Logic Implementation
 
