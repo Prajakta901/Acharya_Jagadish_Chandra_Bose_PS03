@@ -87,6 +87,7 @@ language_sentences = [
     "یہ دنیا بہت خوبصورت ہے۔", 
     "இந்த உலகம் மிகவும் அழகானது.", 
 ] 
+
 for i, sentence in enumerate(language_sentences):
     actual_label = language_labels[i]
     predicted_lang = predict_language_with_normal(sentence)
